@@ -1,11 +1,11 @@
 import SearchBar from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery';
-const { Component } = require('react');
+import { Component } from 'react';
 
 class App extends Component {
   state = {
     searchInput: '',
-    images: [],
+    largeImage: '',
   };
 
   searchInputHandler = input => {
@@ -16,7 +16,9 @@ class App extends Component {
     return (
       <>
         <SearchBar onSubmit={this.searchInputHandler} />
-        <ImageGallery toSearch={this.state.searchInput} />
+        {this.state.searchInput !== '' && (
+          <ImageGallery toSearch={this.state.searchInput} />
+        )}
       </>
     );
   }
