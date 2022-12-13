@@ -12,10 +12,12 @@ class ImageGallery extends Component {
     images: [],
     currentPage: 1,
     totalPages: null,
+    modalOpened: false,
+    largeImage: null,
     status: 'idle',
   };
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     const { toSearch, currentPage } = this.props;
     if (
       prevProps.toSearch === toSearch &&
@@ -61,6 +63,15 @@ class ImageGallery extends Component {
     });
   };
 
+  onImageClick = Image => {
+    this.setState(({ modalOpened }) => {
+      return {
+        modalOpened: !modalOpened,
+        largeImage: Image,
+      };
+    });
+  };
+
   render() {
     if (this.state.status === 'idle') {
       return (
@@ -78,9 +89,13 @@ class ImageGallery extends Component {
       return (
         <>
           <ul className="ImageGallery">
-            <ImageGalleryItem arrayOfImages={this.state.images} />
+            <ImageGalleryItem
+              arrayOfImages={this.state.images}
+              openModal={this.onImageClick}
+            />
           </ul>
           <Button clickHandler={this.loadMoreHandler} />
+          {this.state.modalOpened && <Modal bigImage={this.state.largeImage} />}
         </>
       );
     }

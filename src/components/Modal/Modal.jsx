@@ -1,8 +1,8 @@
-const Modal = ({ bigImage, describe }) => {
+const Modal = ({ bigImage }) => {
   return (
     <div className="Overlay">
       <div className="Modal">
-        <img src={bigImage} alt={describe} />
+        <img src={bigImage} alt="" />
       </div>
     </div>
   );
