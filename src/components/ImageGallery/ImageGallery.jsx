@@ -1,4 +1,3 @@
-// import { Rings } from 'react-loader-spinner';
 import { Component } from 'react';
 
 import ImageGalleryItem from 'components/ImageGalleryItem';
@@ -41,10 +40,12 @@ class ImageGallery extends Component {
           );
         }
         console.log(data);
-        this.setState({
-          images: data.hits,
-          status: 'ready',
-          totalPages: Math.ceil(data.totalHits / 12),
+        this.setState(({ images }) => {
+          return {
+            images: [...images, ...data.hits],
+            status: 'ready',
+            totalPages: Math.ceil(data.totalHits / 12),
+          };
         });
       })
       .catch(error => {
@@ -54,6 +55,7 @@ class ImageGallery extends Component {
 
   loadMoreHandler = () => {
     const { currentPage, totalPages } = this.state;
+
     if (currentPage >= totalPages) {
       return;
     }
@@ -70,6 +72,10 @@ class ImageGallery extends Component {
         largeImage: Image,
       };
     });
+  };
+
+  toggleModal = () => {
+    this.setState(prevState => {});
   };
 
   render() {
