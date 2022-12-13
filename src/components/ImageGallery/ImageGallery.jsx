@@ -20,14 +20,20 @@ class ImageGallery extends Component {
     const { toSearch } = this.props;
     const { currentPage } = this.state;
 
-    if (
-      prevProps.toSearch === toSearch &&
-      prevState.currentPage === currentPage
-    ) {
-      return;
-    }
+    // if (
+    //   prevProps.toSearch !== toSearch ||
+    //   prevState.currentPage !== currentPage
+    // ) {
+    //   return;
+    // }
 
-    console.log('fetch');
+    // if (
+    //   prevProps.toSearch === toSearch &&
+    //   prevState.currentPage === currentPage
+    // ) {
+    //   this.setState({ images: [], currentPage: 1 });
+    // }
+
     this.setState({ status: 'pending' });
 
     fetch(
@@ -64,7 +70,7 @@ class ImageGallery extends Component {
     }
 
     this.setState(({ currentPage }) => {
-      return { status: 'pending', currentPage: currentPage + 1 };
+      return { currentPage: currentPage + 1 };
     });
   };
 
