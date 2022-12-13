@@ -20,10 +20,18 @@ class Modal extends Component {
     }
   };
 
+  handleOverlayClick = e => {
+    if (e.currentTarget !== e.target) {
+      return;
+    }
+
+    this.props.toggleModal();
+  };
+
   render() {
     const { bigImage } = this.props;
     return createPortal(
-      <div className="Overlay">
+      <div className="Overlay" onClick={this.handleOverlayClick}>
         <div className="Modal">
           <img src={bigImage} alt="" />
         </div>
