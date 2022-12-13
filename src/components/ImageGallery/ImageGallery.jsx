@@ -6,14 +6,17 @@ import ImageGalleryItem from '../ImageGalleryItem';
 
 class ImageGallery extends Component {
   state = {
-    error: {},
+    error: null,
     images: [],
     currentPage: 1,
-    status: 'pending',
+    status: 'idle',
   };
 
-  componentDidMount() {
+  componentDidUpdate(prevProps, prevState) {
     const { toSearch } = this.props;
+    if (prevProps.toSearch === toSearch) {
+      return;
+    }
 
     this.setState({ status: 'pending' });
 
@@ -22,19 +25,22 @@ class ImageGallery extends Component {
         `https://pixabay.com/api/?q=${toSearch}&page=${this.state.currentPage}&key=30621712-67ba58dcdbb82dbab3da918bc&image_type=photo&orientation=horizontal&per_page=12`
       )
         .then(response => {
-          if (response.ok) {
-            return response.json();
-          }
-          return Promise.reject(new Error('Smth went wrong'));
+          return response.json();
         })
         .then(data => {
+          if (data.total === 0) {
+            return Promise.reject(
+              new Error(`Картинок по запросу ${toSearch} не найдено`)
+            );
+          }
+
           this.setState({ images: data.hits });
           this.setState({ status: 'ready' });
         })
         .catch(error => {
           this.setState({ error, status: 'rejected' });
         });
-    }, 3000);
+    }, 300);
   }
 
   render() {
@@ -68,9 +74,11 @@ class ImageGallery extends Component {
     }
 
     if (this.state.status === 'rejected') {
-      <h1 style={{ textAlign: 'center', color: 'red' }}>
-        {this.state.error.message}
-      </h1>;
+      return (
+        <h1 style={{ textAlign: 'center', color: 'red' }}>
+          {this.state.error.message}
+        </h1>
+      );
     }
   }
 }

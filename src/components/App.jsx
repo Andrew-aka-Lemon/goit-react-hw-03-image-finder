@@ -16,9 +16,8 @@ class App extends Component {
     return (
       <>
         <SearchBar onSubmit={this.searchInputHandler} />
-        {this.state.searchInput !== '' && (
-          <ImageGallery toSearch={this.state.searchInput} />
-        )}
+
+        <ImageGallery toSearch={this.state.searchInput} />
       </>
     );
   }
