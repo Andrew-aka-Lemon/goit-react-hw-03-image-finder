@@ -16,15 +16,18 @@ class ImageGallery extends Component {
     status: 'idle',
   };
 
-  componentDidUpdate(prevProps) {
-    const { toSearch, currentPage } = this.props;
+  componentDidUpdate(prevProps, prevState) {
+    const { toSearch } = this.props;
+    const { currentPage } = this.state;
+
     if (
       prevProps.toSearch === toSearch &&
-      prevProps.currentPage === currentPage
+      prevState.currentPage === currentPage
     ) {
       return;
     }
 
+    console.log('fetch');
     this.setState({ status: 'pending' });
 
     fetch(
@@ -53,17 +56,17 @@ class ImageGallery extends Component {
       });
   }
 
-  // loadMoreHandler = () => {
-  //   const { currentPage, totalPages } = this.state;
+  loadMoreHandler = () => {
+    const { currentPage, totalPages } = this.state;
 
-  //   if (currentPage >= totalPages) {
-  //     return;
-  //   }
+    if (currentPage >= totalPages) {
+      return;
+    }
 
-  //   this.setState(prevState => {
-  //     return { status: 'pending', currentPage: prevState.currentPage + 1 };
-  //   });
-  // };
+    this.setState(({ currentPage }) => {
+      return { status: 'pending', currentPage: currentPage + 1 };
+    });
+  };
 
   onImageClick = Image => {
     this.setState(({ modalOpened }) => {
