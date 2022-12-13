@@ -53,17 +53,17 @@ class ImageGallery extends Component {
       });
   }
 
-  loadMoreHandler = () => {
-    const { currentPage, totalPages } = this.state;
+  // loadMoreHandler = () => {
+  //   const { currentPage, totalPages } = this.state;
 
-    if (currentPage >= totalPages) {
-      return;
-    }
+  //   if (currentPage >= totalPages) {
+  //     return;
+  //   }
 
-    this.setState(prevState => {
-      return { status: 'pending', currentPage: prevState.currentPage + 1 };
-    });
-  };
+  //   this.setState(prevState => {
+  //     return { status: 'pending', currentPage: prevState.currentPage + 1 };
+  //   });
+  // };
 
   onImageClick = Image => {
     this.setState(({ modalOpened }) => {
@@ -75,7 +75,9 @@ class ImageGallery extends Component {
   };
 
   toggleModal = () => {
-    this.setState(prevState => {});
+    this.setState(({ modalOpened }) => {
+      return { modalOpened: !modalOpened };
+    });
   };
 
   render() {
@@ -101,7 +103,12 @@ class ImageGallery extends Component {
             />
           </ul>
           <Button clickHandler={this.loadMoreHandler} />
-          {this.state.modalOpened && <Modal bigImage={this.state.largeImage} />}
+          {this.state.modalOpened && (
+            <Modal
+              bigImage={this.state.largeImage}
+              toggleModal={this.toggleModal}
+            />
+          )}
         </>
       );
     }
