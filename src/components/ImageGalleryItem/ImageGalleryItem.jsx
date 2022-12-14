@@ -1,19 +1,19 @@
 import PropTypes from 'prop-types';
 
+import {
+  ImageGalleryItemLi,
+  ImageGalleryItemImage,
+} from './ImageGalleryItem.styled';
+
 const ImageGalleryItem = ({ image, openModal }) => {
   return (
-    <li
-      className="ImageGalleryItem"
+    <ImageGalleryItemLi
       onClick={() => {
         openModal(image.largeImageURL);
       }}
     >
-      <img
-        src={image.webformatURL}
-        alt={image.tags}
-        className="ImageGalleryItem-image"
-      />
-    </li>
+      <ImageGalleryItemImage src={image.webformatURL} alt={image.tags} />
+    </ImageGalleryItemLi>
   );
 };
 
