@@ -6,6 +6,8 @@ import Button from 'components/Button';
 import Loader from 'components/Loader';
 import Modal from 'components/Modal';
 
+import errorImg from 'images/Cat.jpg';
+
 class ImageGallery extends Component {
   state = {
     error: null,
@@ -46,9 +48,7 @@ class ImageGallery extends Component {
         })
         .then(data => {
           if (data.total === 0) {
-            return Promise.reject(
-              new Error(`Картинок по запросу ${toSearch} не найдено`)
-            );
+            return Promise.reject(new Error(`What is the <<${toSearch}>> ???`));
           }
           this.setState(({ images }) => {
             return {
@@ -136,9 +136,19 @@ class ImageGallery extends Component {
 
     if (status === 'rejected') {
       return (
-        <h1 style={{ textAlign: 'center', color: 'red' }}>
-          {this.state.error.message}
-        </h1>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column',
+          }}
+        >
+          <h1 style={{ textAlign: 'center', color: 'red' }}>
+            {this.state.error.message}
+          </h1>
+          <img src={errorImg} alt="" />
+        </div>
       );
     }
   }
