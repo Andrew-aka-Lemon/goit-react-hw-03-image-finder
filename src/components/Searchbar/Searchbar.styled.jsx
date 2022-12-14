@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import look from 'images/magnifyingGlass.png';
+
 const Searchbar = styled.header`
   top: 0;
   left: 0;
@@ -34,7 +36,7 @@ const SearchFormButton = styled.button`
   width: 48px;
   height: 48px;
   border: 0;
-  background-image: url('https://image.flaticon.com/icons/svg/149/149852.svg');
+  background-image: url(${look});
   background-size: 40%;
   background-repeat: no-repeat;
   background-position: center;
