@@ -12,6 +12,7 @@ class ImageGallery extends Component {
     currentPage: 1,
     totalPages: null,
     modalOpened: false,
+    isLoadingMore: false,
     largeImage: null,
     status: 'idle',
   };
@@ -20,46 +21,47 @@ class ImageGallery extends Component {
     const { toSearch } = this.props;
     const { currentPage } = this.state;
 
-    // if (
-    //   prevProps.toSearch !== toSearch ||
-    //   prevState.currentPage !== currentPage
-    // ) {
-    //   return;
-    // }
+    // якщо ми ввели новий пошуковий запит
+    if (
+      toSearch !== prevProps.toSearch &&
+      prevState.currentPage === currentPage
+    ) {
+      this.setState({ images: [], currentPage: 1 });
+    }
+    //
 
-    // if (
-    //   prevProps.toSearch === toSearch &&
-    //   prevState.currentPage === currentPage
-    // ) {
-    //   this.setState({ images: [], currentPage: 1 });
-    // }
+    // якщо ми ввели новий пошуковий запит або змінили сторінку пагінації
+    if (
+      prevProps.toSearch !== toSearch ||
+      prevState.currentPage !== currentPage
+    ) {
+      this.setState({ status: 'pending' });
 
-    this.setState({ status: 'pending' });
-
-    fetch(
-      `https://pixabay.com/api/?q=${toSearch}&page=${this.state.currentPage}&key=30621712-67ba58dcdbb82dbab3da918bc&image_type=photo&orientation=horizontal&per_page=12`
-    )
-      .then(response => {
-        return response.json();
-      })
-      .then(data => {
-        if (data.total === 0) {
-          return Promise.reject(
-            new Error(`Картинок по запросу ${toSearch} не найдено`)
-          );
-        }
-        console.log(data);
-        this.setState(({ images }) => {
-          return {
-            images: [...images, ...data.hits],
-            status: 'ready',
-            totalPages: Math.ceil(data.totalHits / 12),
-          };
+      fetch(
+        `https://pixabay.com/api/?q=${toSearch}&page=${this.state.currentPage}&key=30621712-67ba58dcdbb82dbab3da918bc&image_type=photo&orientation=horizontal&per_page=12`
+      )
+        .then(response => {
+          return response.json();
+        })
+        .then(data => {
+          if (data.total === 0) {
+            return Promise.reject(
+              new Error(`Картинок по запросу ${toSearch} не найдено`)
+            );
+          }
+          this.setState(({ images }) => {
+            return {
+              images: [...images, ...data.hits],
+              status: 'ready',
+              totalPages: Math.ceil(data.totalHits / 12),
+              isLoadingMore: false,
+            };
+          });
+        })
+        .catch(error => {
+          this.setState({ error, status: 'rejected' });
         });
-      })
-      .catch(error => {
-        this.setState({ error, status: 'rejected' });
-      });
+    }
   }
 
   loadMoreHandler = () => {
@@ -69,8 +71,8 @@ class ImageGallery extends Component {
       return;
     }
 
-    this.setState(({ currentPage }) => {
-      return { currentPage: currentPage + 1 };
+    this.setState(({ currentPage, isLoadingMore }) => {
+      return { currentPage: currentPage + 1, isLoadingMore: !isLoadingMore };
     });
   };
 
@@ -106,12 +108,24 @@ class ImageGallery extends Component {
       return (
         <>
           <ul className="ImageGallery">
-            <ImageGalleryItem
+            {this.state.images.map(image => {
+              return (
+                <ImageGalleryItem
+                  key={image.id}
+                  image={image}
+                  openModal={this.onImageClick}
+                />
+              );
+            })}
+            {/* <ImageGalleryItem
               arrayOfImages={this.state.images}
               openModal={this.onImageClick}
-            />
+            /> */}
           </ul>
-          <Button clickHandler={this.loadMoreHandler} />
+          {this.state.isLoadingMore && <Loader />}
+          {this.state.totalPages > 1 && !this.state.isLoadingMore && (
+            <Button clickHandler={this.loadMoreHandler} />
+          )}
           {this.state.modalOpened && (
             <Modal
               bigImage={this.state.largeImage}

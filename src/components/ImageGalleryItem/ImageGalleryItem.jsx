@@ -1,17 +1,13 @@
-const ImageGalleryItem = ({ arrayOfImages, openModal }) => {
-  return arrayOfImages.map(({ id, largeImageURL, webformatURL, tags }) => {
-    return (
-      <li
-        key={id}
-        className="ImageGalleryItem"
-        onClick={() => {
-          openModal(largeImageURL);
-        }}
-      >
-        <img src={webformatURL} alt={tags} className="ImageGalleryItem-image" />
-      </li>
-    );
-  });
+const ImageGalleryItem = ({ image, openModal }) => {
+  return (
+    <li className="ImageGalleryItem" onClick={openModal}>
+      <img
+        src={image.webformatURL}
+        alt={image.tags}
+        className="ImageGalleryItem-image"
+      />
+    </li>
+  );
 };
 
 export default ImageGalleryItem;
