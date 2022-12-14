@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Component } from 'react';
 
 import ImageGalleryItem from 'components/ImageGalleryItem';
@@ -142,5 +143,9 @@ class ImageGallery extends Component {
     }
   }
 }
+
+ImageGallery.propTypes = {
+  toSearch: PropTypes.string.isRequired,
+};
 
 export default ImageGallery;

@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 const Button = ({ clickHandler }) => {
   return (
     <div className="button-wrapper">
@@ -6,6 +8,10 @@ const Button = ({ clickHandler }) => {
       </button>
     </div>
   );
+};
+
+Button.propTypes = {
+  clickHandler: PropTypes.func.isRequired,
 };
 
 export default Button;
