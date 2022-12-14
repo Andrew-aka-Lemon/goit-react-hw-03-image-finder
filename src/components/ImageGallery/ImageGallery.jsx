@@ -5,6 +5,7 @@ import ImageGalleryItem from 'components/ImageGalleryItem';
 import Button from 'components/Button';
 import Loader from 'components/Loader';
 import Modal from 'components/Modal';
+import { ImageGalleryList } from './ImageGallery.styled';
 
 import errorImg from 'images/Cat.jpg';
 
@@ -109,7 +110,7 @@ class ImageGallery extends Component {
     if (status === 'ready') {
       return (
         <>
-          <ul className="ImageGallery">
+          <ImageGalleryList>
             {images.map(image => {
               return (
                 <ImageGalleryItem
@@ -119,7 +120,7 @@ class ImageGallery extends Component {
                 />
               );
             })}
-          </ul>
+          </ImageGalleryList>
           {this.state.isLoadingMore && <Loader />}
           {this.state.totalPages > 1 && !this.state.isLoadingMore && (
             <Button clickHandler={this.loadMoreHandler} />
