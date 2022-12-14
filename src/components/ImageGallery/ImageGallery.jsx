@@ -92,7 +92,8 @@ class ImageGallery extends Component {
   };
 
   render() {
-    if (this.state.status === 'idle') {
+    const { images, status } = this.state;
+    if (status === 'idle') {
       return (
         <h1 style={{ textAlign: 'center' }}>
           What do you want to look on ? Put the search above
@@ -100,15 +101,15 @@ class ImageGallery extends Component {
       );
     }
 
-    if (this.state.status === 'pending') {
+    if (status === 'pending') {
       return <Loader />;
     }
 
-    if (this.state.status === 'ready') {
+    if (status === 'ready') {
       return (
         <>
           <ul className="ImageGallery">
-            {this.state.images.map(image => {
+            {images.map(image => {
               return (
                 <ImageGalleryItem
                   key={image.id}
@@ -117,10 +118,6 @@ class ImageGallery extends Component {
                 />
               );
             })}
-            {/* <ImageGalleryItem
-              arrayOfImages={this.state.images}
-              openModal={this.onImageClick}
-            /> */}
           </ul>
           {this.state.isLoadingMore && <Loader />}
           {this.state.totalPages > 1 && !this.state.isLoadingMore && (
@@ -136,7 +133,7 @@ class ImageGallery extends Component {
       );
     }
 
-    if (this.state.status === 'rejected') {
+    if (status === 'rejected') {
       return (
         <h1 style={{ textAlign: 'center', color: 'red' }}>
           {this.state.error.message}

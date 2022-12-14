@@ -1,6 +1,11 @@
 const ImageGalleryItem = ({ image, openModal }) => {
   return (
-    <li className="ImageGalleryItem" onClick={openModal}>
+    <li
+      className="ImageGalleryItem"
+      onClick={() => {
+        openModal(image.largeImageURL);
+      }}
+    >
       <img
         src={image.webformatURL}
         alt={image.tags}
