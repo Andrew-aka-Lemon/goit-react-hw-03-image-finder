@@ -8,6 +8,7 @@ import Modal from 'components/Modal';
 import { ImageGalleryList } from './ImageGallery.styled';
 
 import errorImg from 'images/Cat.jpg';
+import PixabayAPI from 'components/PixabayAPI';
 
 class ImageGallery extends Component {
   state = {
@@ -41,12 +42,7 @@ class ImageGallery extends Component {
     ) {
       this.setState({ status: 'pending' });
 
-      fetch(
-        `https://pixabay.com/api/?q=${toSearch}&page=${this.state.currentPage}&key=30621712-67ba58dcdbb82dbab3da918bc&image_type=photo&orientation=horizontal&per_page=12`
-      )
-        .then(response => {
-          return response.json();
-        })
+      PixabayAPI(toSearch, currentPage)
         .then(data => {
           if (data.total === 0) {
             return Promise.reject(new Error(`What is the <<${toSearch}>> ???`));
